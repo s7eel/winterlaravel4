@@ -1,22 +1,31 @@
 <?php
-
 namespace App;
+use App\Task;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-// Импортирования пространства имён...
-
-class User extends Model implements AuthenticatableContract,
-                                    AuthorizableContract,
-                                    CanResetPasswordContract
+class User extends Authenticatable
 {
-  use Authenticatable, Authorizable, CanResetPassword;
-
-  // Другие Eloquent свойства...
-
-  /**
-   * Получить все задачи пользователя.
-   */
-  public function tasks()
-  {
-    return $this->hasMany(Task::class);
-  }
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name', 'email', 'password',
+    ];
+    /**
+     * The attributes excluded from the model's JSON form.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password', 'remember_token',
+    ];
+    /**
+     * Get all of the tasks for the user.
+     */
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
+    }
 }
